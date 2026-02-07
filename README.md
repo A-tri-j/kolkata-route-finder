@@ -1,0 +1,2 @@
+# kolkata-route-finder
+A clean and interactive web-based route finder for Kolkata with graph visualization, SVG map rendering, and responsive mobile-first UI.
