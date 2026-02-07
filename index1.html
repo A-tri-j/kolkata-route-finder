@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolkata Route Pro | Light Edition</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+    <header>
+        <h1><i class="fas fa-map-location-dot"></i> Route Finder</h1>
+        <div class="date-info" id="current-date">Wednesday, February 4, 2026</div>
+    </header>
+
+    <section class="glass-card">
+        <div class="search-bar">
+            <div class="input-group">
+                <label>Source Station</label>
+                <select id="source"></select>
+            </div>
+
+            <div class="input-group">
+                <label>Destination</label>
+                <select id="destination"></select>
+            </div>
+
+            <button class="btn-calculate" onclick="findPath()">
+                <i class="fas fa-location-arrow"></i> Calculate
+            </button>
+        </div>
+
+        <div class="map-wrapper">
+            <svg id="map" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+
+        <div class="results-footer">
+            <span>Route: <strong id="output">Select stations</strong></span>
+            <span class="divider">|</span>
+            <span>Distance: <strong id="distance-val">0 km</strong></span>
+            <span style="margin-left:auto; cursor:pointer;" onclick="location.reload()">
+                <i class="fas fa-undo"></i> Reset
+            </span>
+        </div>
+    </section>
+
+    <div class="builder-grid">
+        <div class="glass-card">
+            <h3 class="section-title"><i class="fas fa-circle-plus"></i> Node Builder</h3>
+            <div class="flex-col">
+                <input type="text" id="nodeName" placeholder="Enter station name..." />
+                <button class="btn-add" onclick="addNode()">Add to Graph</button>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3 class="section-title"><i class="fas fa-link"></i> Path Connection</h3>
+            <div class="flex-col">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="fromNode" placeholder="From" />
+                    <input type="text" id="toNode" placeholder="To" />
+                </div>
+                <input type="number" id="weight" placeholder="Weight (Distance)" />
+                <button class="btn-add" onclick="addEdge()">Connect Nodes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    const d = new Date();
+    document.getElementById('current-date').innerText =
+        d.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+</script>
+
+</body>
+</html>
