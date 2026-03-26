@@ -31,6 +31,14 @@ let nodes = {
 let graph = {};
 let isPlacingNode = false;
 let pendingNodeName = "";
+let showWeights = false;
+
+function toggleWeights() {
+    showWeights = !showWeights;
+    const btn = document.getElementById("toggleWeightsBtn");
+    btn.classList.toggle("active", showWeights);
+    drawMap();
+}
 
 /* --- Add Node --- */
 function addNode() {
@@ -110,6 +118,41 @@ function drawLine(u, v) {
     l.setAttribute("stroke", colors.roadLine);
     l.setAttribute("stroke-width", "2");
     svg.appendChild(l);
+
+    if (showWeights && graph[u] && graph[u][v] !== undefined) {
+        const mx = (nodes[u].x + nodes[v].x) / 2;
+        const my = (nodes[u].y + nodes[v].y) / 2;
+
+        // Perpendicular nudge so the label doesn't sit on top of node name text
+        const dx = nodes[v].x - nodes[u].x;
+        const dy = nodes[v].y - nodes[u].y;
+        const len = Math.hypot(dx, dy) || 1;
+        const perpX = (-dy / len) * 9;
+        const perpY = (dx / len) * 9;
+        // Push toward upper side of the edge (negative Y = up in SVG)
+        const ox = mx + (perpY > 0 ? -perpX : perpX);
+        const oy = my + (perpY > 0 ? -perpY : perpY);
+
+        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        pill.setAttribute("x", ox - 11);
+        pill.setAttribute("y", oy - 8);
+        pill.setAttribute("width", 22);
+        pill.setAttribute("height", 14);
+        pill.setAttribute("rx", 4);
+        pill.setAttribute("fill", "rgba(15,23,42,0.55)");
+        svg.appendChild(pill);
+
+        const wt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        wt.setAttribute("x", ox);
+        wt.setAttribute("y", oy + 3);
+        wt.setAttribute("text-anchor", "middle");
+        wt.setAttribute("font-size", "9");
+        wt.setAttribute("font-weight", "600");
+        wt.setAttribute("fill", "rgba(203,213,225,0.75)");
+        wt.setAttribute("class", "weight-label");
+        wt.textContent = graph[u][v];
+        svg.appendChild(wt);
+    }
 }
 
 function updateStartMarker() {
